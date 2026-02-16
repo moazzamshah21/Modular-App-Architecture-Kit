@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/media_controller.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../controllers/media_controller.dart';
+import '../services/firebase_service.dart';
 
 class MediaBinding extends Bindings {
   @override

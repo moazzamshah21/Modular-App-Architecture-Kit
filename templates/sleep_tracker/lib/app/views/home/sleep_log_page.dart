@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/sleep_controller.dart';
-import 'package:modularapparchitecture/app/models/sleep_log_model.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/sleep_controller.dart';
+import '../../models/sleep_log_model.dart';
+import '../../routes/app_pages.dart';
 
 class SleepLogPage extends GetView<SleepController> {
   const SleepLogPage({super.key});

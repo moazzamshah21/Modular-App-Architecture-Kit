@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/models/product_model.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../models/product_model.dart';
+import '../services/firebase_service.dart';
 
 class ProductController extends GetxController {
   ProductController(this._firebase);

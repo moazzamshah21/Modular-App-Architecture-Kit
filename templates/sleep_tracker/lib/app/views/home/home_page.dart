@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/sleep_controller.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/sleep_controller.dart';
+import '../../routes/app_pages.dart';
 
 class HomePage extends GetView<SleepController> {
   const HomePage({super.key});

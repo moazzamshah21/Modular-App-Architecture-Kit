@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/product_controller.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../controllers/product_controller.dart';
+import '../services/firebase_service.dart';
 
 class ProductBinding extends Bindings {
   @override

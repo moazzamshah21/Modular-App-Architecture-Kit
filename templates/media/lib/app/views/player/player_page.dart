@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/media_controller.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/media_controller.dart';
+import '../../routes/app_pages.dart';
 
 class PlayerPage extends GetView<MediaController> {
   const PlayerPage({super.key});

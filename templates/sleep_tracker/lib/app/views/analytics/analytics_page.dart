@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/sleep_controller.dart';
+import '../../controllers/sleep_controller.dart';
 
 class AnalyticsPage extends GetView<SleepController> {
   const AnalyticsPage({super.key});

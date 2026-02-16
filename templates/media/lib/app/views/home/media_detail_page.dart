@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/media_controller.dart';
-import 'package:modularapparchitecture/app/models/media_model.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/media_controller.dart';
+import '../../models/media_model.dart';
+import '../../routes/app_pages.dart';
 
 class MediaDetailPage extends GetView<MediaController> {
   const MediaDetailPage({super.key});

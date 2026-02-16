@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/models/message_model.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../models/message_model.dart';
+import '../services/firebase_service.dart';
 
 class ChatController extends GetxController {
   ChatController(this._firebase);

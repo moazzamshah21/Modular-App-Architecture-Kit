@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/auth_controller.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../controllers/auth_controller.dart';
+import '../services/firebase_service.dart';
 
 class AuthBinding extends Bindings {
   @override

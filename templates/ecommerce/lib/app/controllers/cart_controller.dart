@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/models/product_model.dart';
+import '../models/product_model.dart';
 
 class CartController extends GetxController {
   final items = <ProductModel>[].obs;

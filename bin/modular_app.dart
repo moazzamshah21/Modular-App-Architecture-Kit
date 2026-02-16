@@ -55,7 +55,7 @@ Usage:
   modular_app init [--state=getx|riverpod]
   modular_app generate feature <name>
 
-Templates: default | ecommerce | messaging | media | sleep_tracker
+Templates: ecommerce | messaging | media | sleep_tracker
   (If --template is omitted, you will be prompted to select one.)
 
 Examples:
@@ -214,14 +214,24 @@ void _mergePubspecDependencies(String projectPath) {
   pubspec.writeAsStringSync(content);
 }
 
-/// Available template keys and their display names.
+/// Available template keys and their display names. (Only templates from templates/ folder.)
 const _templates = {
-  'default': 'Default (feature-first clean architecture)',
   'ecommerce': 'E-Commerce (products, cart, checkout)',
   'messaging': 'Messaging (chat list, chat screen)',
   'media': 'Music/Video (library, player, playlists)',
   'sleep_tracker': 'Sleep Tracker (logs, analytics)',
 };
+
+void _printTemplateMenu() {
+  final list = _templates.entries.toList();
+  stderr.writeln('');
+  stderr.writeln('Choose a template:');
+  for (var i = 0; i < list.length; i++) {
+    stderr.writeln('  ${i + 1}) ${list[i].value}');
+  }
+  stderr.writeln('  Enter number (1-${list.length}) [default: 1 = E-Commerce]: ');
+  stderr.flush();
+}
 
 String _selectTemplate(String? templateFlag) {
   if (templateFlag != null && templateFlag.isNotEmpty) {
@@ -233,23 +243,23 @@ String _selectTemplate(String? templateFlag) {
   }
 
   final list = _templates.entries.toList();
-  print('');
-  print('Choose a template:');
-  for (var i = 0; i < list.length; i++) {
-    print('  ${i + 1}) ${list[i].value}');
-  }
-  print('  Enter number (1-${list.length}) [default: 1]: ');
-  stdout.flush();
+  _printTemplateMenu();
 
   if (!stdin.hasTerminal) {
-    print('');
-    print('No interactive terminal. Run with: --template=<name>');
-    print('  e.g. modular_app create my_app --template=ecommerce');
-    print('  Templates: ${list.map((e) => e.key).join(", ")}');
-    exit(1);
+    stderr.writeln('');
+    stderr.writeln('No interactive terminal. Using E-Commerce template.');
+    stderr.writeln('To use another: modular_app create <project_name> --template=<name>');
+    stderr.writeln('  e.g. --template=messaging | --template=media | --template=sleep_tracker');
+    stderr.flush();
+    return list[0].key;
   }
 
-  final line = stdin.readLineSync()?.trim() ?? '1';
+  final line = stdin.readLineSync()?.trim();
+  if (line == null || line.isEmpty) {
+    stderr.writeln('No input. Using E-Commerce (1).');
+    stderr.flush();
+    return list[0].key;
+  }
   final index = int.tryParse(line);
   if (index == null || index < 1 || index > list.length) {
     return list[0].key;
@@ -264,6 +274,18 @@ void createProject(String name, {String? template}) {
   if (Directory(projectPath).existsSync()) {
     print('Error: Directory "$name" already exists.');
     exit(1);
+  }
+
+  // Always show template selection first (so user sees it even if stderr is hidden).
+  if (template == null || template.isEmpty) {
+    print('');
+    print('=== Choose a template ===');
+    final list = _templates.entries.toList();
+    for (var i = 0; i < list.length; i++) {
+      print('  ${i + 1}) ${list[i].value}');
+    }
+    print('  Enter number (1-${list.length}) or use: --template=ecommerce');
+    print('');
   }
 
   final templateKey = _selectTemplate(template);
@@ -284,12 +306,7 @@ void createProject(String name, {String? template}) {
   print('Flutter project created.');
 
   final packageRoot = _packageRoot();
-  final Directory templateLib;
-  if (templateKey == 'default') {
-    templateLib = Directory(p.join(packageRoot, 'lib'));
-  } else {
-    templateLib = Directory(p.join(packageRoot, 'templates', templateKey, 'lib'));
-  }
+  final templateLib = Directory(p.join(packageRoot, 'templates', templateKey, 'lib'));
   if (!templateLib.existsSync()) {
     print('Error: Template lib not found at ${templateLib.path}');
     exit(1);

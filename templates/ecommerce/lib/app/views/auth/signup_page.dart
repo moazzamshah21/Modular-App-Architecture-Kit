@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/auth_controller.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/auth_controller.dart';
+import '../../routes/app_pages.dart';
 
 class SignUpPage extends GetView<AuthController> {
   const SignUpPage({super.key});
@@ -12,50 +12,82 @@ class SignUpPage extends GetView<AuthController> {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Get.back())),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (controller.errorMessage.value != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    controller.errorMessage.value!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
+              const SizedBox(height: 24),
+              Text(
+                'Create account',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Join us and start shopping',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
+              ),
+              const SizedBox(height: 32),
+              Obx(() {
+                if (controller.errorMessage.value != null)
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.red.shade200),
+                      ),
+                      child: Text(controller.errorMessage.value!, style: TextStyle(color: Colors.red.shade700)),
+                    ),
+                  );
+                return const SizedBox.shrink();
+              }),
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  hintText: 'Enter your email',
+                  prefixIcon: Icon(Icons.email_outlined),
+                ),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Create a password (min 6 characters)',
+                  prefixIcon: Icon(Icons.lock_outline),
+                ),
                 obscureText: true,
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => controller.signUp(
-                  emailController.text.trim(),
-                  passwordController.text,
-                ),
-                child: const Text('Sign Up'),
-              ),
+              Obx(() => ElevatedButton(
+                    onPressed: controller.isLoading.value
+                        ? null
+                        : () async {
+                            await controller.signUp(
+                              emailController.text.trim(),
+                              passwordController.text,
+                            );
+                            if (controller.isLoggedIn.value) Get.offAllNamed(AppRoutes.home);
+                          },
+                    child: controller.isLoading.value
+                        ? const SizedBox(height: 24, width: 24, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Text('Create Account'),
+                  )),
+              const SizedBox(height: 16),
               TextButton(
                 onPressed: () => Get.back(),
-                child: const Text('Back to Login'),
+                child: const Text('Already have an account? Sign In'),
               ),
             ],
-          );
-        }),
+          ),
+        ),
       ),
     );
   }

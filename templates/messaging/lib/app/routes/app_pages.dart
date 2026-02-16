@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/bindings/auth_binding.dart';
-import 'package:modularapparchitecture/app/bindings/chat_binding.dart';
-import 'package:modularapparchitecture/app/views/auth/login_page.dart';
-import 'package:modularapparchitecture/app/views/auth/signup_page.dart';
-import 'package:modularapparchitecture/app/views/chat/chat_list_page.dart';
-import 'package:modularapparchitecture/app/views/chat/chat_screen.dart';
-import 'package:modularapparchitecture/app/views/profile/profile_page.dart';
+import '../bindings/auth_binding.dart';
+import '../bindings/chat_binding.dart';
+import '../views/auth/login_page.dart';
+import '../views/splash/splash_page.dart';
+import '../views/auth/signup_page.dart';
+import '../views/chat/chat_list_page.dart';
+import '../views/chat/chat_screen.dart';
+import '../views/profile/profile_page.dart';
 
 abstract class AppRoutes {
+  static const splash = '/';
   static const login = '/login';
   static const signup = '/signup';
   static const chatList = '/chats';
@@ -18,6 +20,7 @@ abstract class AppRoutes {
 
 class AppPages {
   static final routes = [
+    GetPage(name: AppRoutes.splash, page: () => const SplashPage(), binding: AuthBinding()),
     GetPage(name: AppRoutes.login, page: () => const LoginPage(), binding: AuthBinding()),
     GetPage(name: AppRoutes.signup, page: () => const SignUpPage(), binding: AuthBinding()),
     GetPage(name: AppRoutes.chatList, page: () => const ChatListPage(), binding: ChatBinding()),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/auth_controller.dart';
-import 'package:modularapparchitecture/app/routes/app_pages.dart';
+import '../../controllers/auth_controller.dart';
+import '../../routes/app_pages.dart';
 
 class ProfilePage extends GetView<AuthController> {
   const ProfilePage({super.key});

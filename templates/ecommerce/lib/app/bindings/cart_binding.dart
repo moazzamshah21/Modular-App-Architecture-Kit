@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/controllers/cart_controller.dart';
+import '../controllers/cart_controller.dart';
 
 class CartBinding extends Bindings {
   @override

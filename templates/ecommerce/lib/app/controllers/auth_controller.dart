@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/models/user_model.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../models/user_model.dart';
+import '../services/firebase_service.dart';
 
 class AuthController extends GetxController {
   AuthController(this._firebase);

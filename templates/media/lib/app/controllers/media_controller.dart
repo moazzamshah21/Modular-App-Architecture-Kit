@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
-import 'package:modularapparchitecture/app/models/media_model.dart';
-import 'package:modularapparchitecture/app/models/playlist_model.dart';
-import 'package:modularapparchitecture/app/services/firebase_service.dart';
+import '../models/media_model.dart';
+import '../models/playlist_model.dart';
+import '../services/firebase_service.dart';
 
 class MediaController extends GetxController {
   MediaController(this._firebase);
