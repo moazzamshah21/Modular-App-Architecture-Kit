@@ -9,11 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Nothing yet.
+- **Full project scaffold**: `modular_app create <project_name>` — runs `flutter create`, then injects full architecture (core, shared, features/auth, home, profile), main.dart, routes, bindings, theme, and merges required dependencies into pubspec. Enables one-command bootstrap: `modular_app create my_app` then `cd my_app && flutter pub get && flutter run`.
 
 ### Changed
 
-- Nothing yet.
+- **README**: Quick start with `create` at top; CLI section documents create / generate / init; new “Publish & use as package” section; roadmap updated for full project scaffold.
+- **docs/getting-started.md**: “Option A: Create a new project” and “Option B: Run this repo”; generate feature section clarified for use inside created or cloned projects.
 
 ### Fixed
 
@@ -45,5 +46,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/your-username/modular-app-architecture/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/your-username/modular-app-architecture/releases/tag/v0.1.0
+[Unreleased]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/releases/tag/v0.1.0

@@ -1,13 +1,39 @@
 # Getting started
 
-Quick setup to run the Modular App Architecture Kit 2026 and generate your first feature.
+Quick setup to run the Modular App Architecture Kit 2026, create a new project, or generate your first feature.
 
 ## Prerequisites
 
 - Flutter SDK (stable)
 - Dart 3.x
 
-## Run the app
+## Option A: Create a new project (recommended)
+
+Use the CLI to create a full Flutter app with the architecture already in place:
+
+```bash
+# Install the CLI (from pub.dev after publishing, or from this repo)
+dart pub global activate modularapparchitecture
+
+# Create the project
+modular_app create my_app
+cd my_app
+flutter pub get
+flutter run
+```
+
+Without global install (e.g. from this repo):
+
+```bash
+dart run modularapparchitecture:modular_app create my_app
+cd my_app
+flutter pub get
+flutter run
+```
+
+This gives you `core/`, `shared/`, `features/auth`, `features/home`, `features/profile`, routes, bindings, and theme. Optionally add Firebase config files for auth/Firestore.
+
+## Option B: Run this repo as the app
 
 1. Clone the repo and open the project root.
 2. Install dependencies:
@@ -22,7 +48,7 @@ Quick setup to run the Modular App Architecture Kit 2026 and generate your first
 
 ## Generate a new feature
 
-From the project root:
+From the **project root** (an app created with `modular_app create` or this repo):
 
 ```bash
 dart run modularapparchitecture:modular_app generate feature <name>

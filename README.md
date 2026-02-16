@@ -5,6 +5,31 @@ Ship maintainable apps instead of untangled `lib/` folders.
 
 ---
 
+## ⚡ Quick start (create a full project)
+
+After [publishing](#-publish--use-as-package) or when developing from this repo:
+
+```bash
+# Install CLI globally (once)
+dart pub global activate modularapparchitecture
+
+# Create a new Flutter project with full architecture
+modular_app create my_app
+cd my_app
+flutter pub get
+flutter run
+```
+
+Or without global install:
+
+```bash
+dart run modularapparchitecture:modular_app create my_app
+```
+
+This runs `flutter create`, then injects **core**, **shared**, **features** (auth, home, profile), routes, bindings, theme, and required dependencies. Optional: add Firebase config files for auth/Firestore.
+
+---
+
 ## 🚀 What problem it solves
 
 - **Scattered structure** — No more “where does this screen live?” or “is this a widget or a service?”. Every feature has one place: `features/<name>/`.
@@ -33,7 +58,7 @@ modular_app_architecture/
       auth/            # data → domain → presentation → bindings
       profile/         # Example non-auth feature (same structure)
       home/
-  bin/                 # CLI: modular_app (generate feature, init)
+  bin/                 # CLI: modular_app (create project, generate feature, init)
   example/             # This repo root is the example app — run from root
   docs/                # architecture.md, getting-started.md
   test/                # Mirrors lib: test/features/auth/, test/core/
@@ -77,7 +102,18 @@ modular_app_architecture/
 
 ## 🔥 CLI commands
 
-From the **project root**:
+### Create a full project (recommended)
+
+Creates a new Flutter app and injects the full architecture (core, shared, features/auth, home, profile, routes, theme, bindings, dependencies).
+
+```bash
+modular_app create <project_name>
+# or: dart run modularapparchitecture:modular_app create <project_name>
+```
+
+### Generate a feature (inside an existing project)
+
+From the **project root** of an app (created with `create` or cloned from this repo):
 
 ```bash
 # Generate a full feature (data, domain, presentation, bindings)
@@ -88,12 +124,13 @@ dart run modularapparchitecture:modular_app generate feature settings
 dart run modularapparchitecture:modular_app generate feature orders
 ```
 
+### Init (state management info)
+
 ```bash
-# Init / state management (GetX is the default)
 dart run modularapparchitecture:modular_app init --state=getx
 ```
 
-The generator creates the folder tree and a GetX binding stub so you stay consistent with the rest of the app.
+The **generate feature** command creates the folder tree and a GetX binding stub so you stay consistent with the rest of the app.
 
 ---
 
@@ -138,6 +175,7 @@ Lives in `core/services/api_client.dart`. Inject it in datasources the same way 
 ## 🛣 Roadmap
 
 - [x] Feature-first structure and CLI (`generate feature`)
+- [x] **Full project scaffold** — `modular_app create <name>` (replaces manual setup)
 - [x] Auth flow with real Firebase auth check
 - [x] Example non-auth feature (profile)
 - [x] API client (Dio + interceptors + ApiException)
@@ -149,7 +187,7 @@ Lives in `core/services/api_client.dart`. Inject it in datasources the same way 
 
 ---
 
-## Quick start
+## Quick start (from this repo)
 
 1. **Clone** and open the repo root.
 2. **Install**: `flutter pub get`
@@ -157,8 +195,23 @@ Lives in `core/services/api_client.dart`. Inject it in datasources the same way 
 4. **Run**: `flutter run`
 5. **Generate a feature**: `dart run modularapparchitecture:modular_app generate feature <name>`
 
+To **create a new project from scratch** (without cloning), use the [Quick start at the top](#-quick-start-create-a-full-project) or install the package and run `modular_app create my_app`.
+
 More detail: [docs/getting-started.md](docs/getting-started.md).  
 Architecture deep-dive: [docs/architecture.md](docs/architecture.md).
+
+---
+
+## 📦 Publish & use as package
+
+1. Remove or change `publish_to: 'none'` in `pubspec.yaml`, then run `dart pub publish`.
+2. **As CLI (create / generate):**
+   ```bash
+   dart pub global activate modularapparchitecture
+   modular_app create my_app
+   modular_app generate feature settings   # inside a project
+   ```
+3. **As dependency:** add `modularapparchitecture: ^0.1.0` to your app’s `pubspec.yaml` and import `package:modularapparchitecture/...` (e.g. theme, animations, services).
 
 ---
 
