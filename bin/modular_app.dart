@@ -14,6 +14,13 @@ void main(List<String> arguments) {
   final command = arguments[0].toLowerCase();
 
   switch (command) {
+    case 'create':
+      if (arguments.length < 2) {
+        print('Usage: modular_app create <project_name>');
+        exit(1);
+      }
+      createProject(arguments[1]);
+      break;
     case 'generate':
       if (arguments.length < 3) {
         print('Usage: modular_app generate feature <name>');
@@ -43,10 +50,12 @@ void _printUsage() {
 Modular App Architecture Kit 2026 — CLI
 
 Usage:
+  modular_app create <project_name>   Create full Flutter project with architecture
   modular_app init [--state=getx|riverpod]
   modular_app generate feature <name>
 
 Examples:
+  dart run modularapparchitecture:modular_app create my_app
   dart run modularapparchitecture:modular_app generate feature auth
   dart run modularapparchitecture:modular_app generate feature profile
   dart run modularapparchitecture:modular_app init --state=getx
@@ -129,4 +138,116 @@ class ${capName}Binding extends Bindings {
 void init(String state) {
   print('Init with state management: $state');
   print('Project already uses GetX. See lib/core/di/app_bindings.dart');
+}
+
+/// Returns the package root directory (directory containing pubspec.yaml).
+String _packageRoot() {
+  final script = Platform.script;
+  String path;
+  if (script.isScheme('file')) {
+    path = script.toFilePath();
+  } else {
+    exit(1);
+  }
+  var dir = File(path).parent;
+  for (var i = 0; i < 10; i++) {
+    if (File(p.join(dir.path, 'pubspec.yaml')).existsSync()) {
+      return dir.path;
+    }
+    final parent = dir.parent;
+    if (parent.path == dir.path) break;
+    dir = parent;
+  }
+  print('Error: Could not find package root (pubspec.yaml).');
+  exit(1);
+}
+
+void _copyDirRecursive(Directory source, Directory target) {
+  if (!target.existsSync()) target.createSync(recursive: true);
+  for (final entity in source.listSync()) {
+    final name = p.basename(entity.path);
+    final targetPath = p.join(target.path, name);
+    if (entity is File) {
+      File(targetPath).writeAsStringSync(entity.readAsStringSync());
+    } else if (entity is Directory) {
+      _copyDirRecursive(entity, Directory(targetPath));
+    }
+  }
+}
+
+const _extraDependencies = '''
+  get: ^4.6.6
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.4
+  cloud_firestore: ^5.5.2
+  path: ^1.9.0
+  dio: ^5.7.0
+''';
+
+void _mergePubspecDependencies(String projectPath) {
+  final pubspec = File(p.join(projectPath, 'pubspec.yaml'));
+  if (!pubspec.existsSync()) return;
+  String content = pubspec.readAsStringSync();
+  if (content.contains('get:')) return;
+  final insert = _extraDependencies;
+  final cupertinoLine = content.indexOf('cupertino_icons:');
+  if (cupertinoLine == -1) return;
+  final lineEnd = content.indexOf('\n', cupertinoLine);
+  final insertIndex = lineEnd == -1 ? content.length : lineEnd + 1;
+  content = content.substring(0, insertIndex) + insert + content.substring(insertIndex);
+  pubspec.writeAsStringSync(content);
+}
+
+void createProject(String name) {
+  final cwd = p.current;
+  final projectPath = p.join(cwd, name);
+
+  if (Directory(projectPath).existsSync()) {
+    print('Error: Directory "$name" already exists.');
+    exit(1);
+  }
+
+  print('Creating Flutter project: $name ...');
+  final result = Process.runSync(
+    'flutter',
+    ['create', '--project-name', name, name],
+    workingDirectory: cwd,
+    runInShell: true,
+  );
+  if (result.exitCode != 0) {
+    print('flutter create failed: ${result.stderr}');
+    exit(1);
+  }
+  print('Flutter project created.');
+
+  final packageRoot = _packageRoot();
+  final templateLib = Directory(p.join(packageRoot, 'lib'));
+  if (!templateLib.existsSync()) {
+    print('Error: Template lib not found at ${templateLib.path}');
+    exit(1);
+  }
+
+  final projectLib = Directory(p.join(projectPath, 'lib'));
+  if (projectLib.existsSync()) {
+    for (final entity in projectLib.listSync()) {
+      if (entity is File) entity.deleteSync();
+      if (entity is Directory) entity.deleteSync(recursive: true);
+    }
+  } else {
+    projectLib.createSync(recursive: true);
+  }
+
+  print('Injecting modular architecture (core, shared, features)...');
+  _copyDirRecursive(templateLib, projectLib);
+
+  print('Adding dependencies to pubspec.yaml...');
+  _mergePubspecDependencies(projectPath);
+
+  print('');
+  print('Done. Next steps:');
+  print('  cd $name');
+  print('  flutter pub get');
+  print('  flutter run');
+  print('');
+  print('Optional: add Firebase (google-services, GoogleService-Info.plist) for auth.');
 }
