@@ -27,7 +27,7 @@ dev_dependencies:
   mocktail: ^1.0.4
 
 executables:
-  modular_app: bin/modular_app.dart
+  modular_app:
 
 flutter:
   uses-material-design: true

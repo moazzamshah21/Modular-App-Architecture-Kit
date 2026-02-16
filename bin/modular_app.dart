@@ -16,10 +16,11 @@ void main(List<String> arguments) {
   switch (command) {
     case 'create':
       if (arguments.length < 2) {
-        print('Usage: modular_app create <project_name>');
+        print('Usage: modular_app create <project_name> [--template=<name>]');
         exit(1);
       }
-      createProject(arguments[1]);
+      final template = _getOption(arguments, '--template');
+      createProject(arguments[1], template: template);
       break;
     case 'generate':
       if (arguments.length < 3) {
@@ -50,15 +51,17 @@ void _printUsage() {
 Modular App Architecture Kit 2026 — CLI
 
 Usage:
-  modular_app create <project_name>   Create full Flutter project with architecture
+  modular_app create <project_name> [--template=<name>]
   modular_app init [--state=getx|riverpod]
   modular_app generate feature <name>
 
+Templates: default | ecommerce | messaging | media | sleep_tracker
+  (If --template is omitted, you will be prompted to select one.)
+
 Examples:
   dart run modularapparchitecture:modular_app create my_app
+  dart run modularapparchitecture:modular_app create my_shop --template=ecommerce
   dart run modularapparchitecture:modular_app generate feature auth
-  dart run modularapparchitecture:modular_app generate feature profile
-  dart run modularapparchitecture:modular_app init --state=getx
 ''');
 }
 
@@ -140,6 +143,9 @@ void init(String state) {
   print('Project already uses GetX. See lib/core/di/app_bindings.dart');
 }
 
+/// Package name used in template lib imports. Replaced with project name on create.
+const _templatePackageName = 'modularapparchitecture';
+
 /// Returns the package root directory (directory containing pubspec.yaml).
 String _packageRoot() {
   final script = Platform.script;
@@ -162,15 +168,25 @@ String _packageRoot() {
   exit(1);
 }
 
-void _copyDirRecursive(Directory source, Directory target) {
+void _copyDirRecursive(Directory source, Directory target,
+    {String? projectPackageName}) {
   if (!target.existsSync()) target.createSync(recursive: true);
   for (final entity in source.listSync()) {
     final name = p.basename(entity.path);
     final targetPath = p.join(target.path, name);
     if (entity is File) {
-      File(targetPath).writeAsStringSync(entity.readAsStringSync());
+      var content = entity.readAsStringSync();
+      if (projectPackageName != null &&
+          (name.endsWith('.dart') || name.endsWith('.yaml'))) {
+        content = content.replaceAll(
+          'package:$_templatePackageName/',
+          'package:$projectPackageName/',
+        );
+      }
+      File(targetPath).writeAsStringSync(content);
     } else if (entity is Directory) {
-      _copyDirRecursive(entity, Directory(targetPath));
+      _copyDirRecursive(entity, Directory(targetPath),
+          projectPackageName: projectPackageName);
     }
   }
 }
@@ -198,7 +214,50 @@ void _mergePubspecDependencies(String projectPath) {
   pubspec.writeAsStringSync(content);
 }
 
-void createProject(String name) {
+/// Available template keys and their display names.
+const _templates = {
+  'default': 'Default (feature-first clean architecture)',
+  'ecommerce': 'E-Commerce (products, cart, checkout)',
+  'messaging': 'Messaging (chat list, chat screen)',
+  'media': 'Music/Video (library, player, playlists)',
+  'sleep_tracker': 'Sleep Tracker (logs, analytics)',
+};
+
+String _selectTemplate(String? templateFlag) {
+  if (templateFlag != null && templateFlag.isNotEmpty) {
+    final key = templateFlag.toLowerCase().trim();
+    if (_templates.containsKey(key)) return key;
+    print('Unknown template: $templateFlag');
+    print('Available: ${_templates.keys.join(", ")}');
+    exit(1);
+  }
+
+  final list = _templates.entries.toList();
+  print('');
+  print('Choose a template:');
+  for (var i = 0; i < list.length; i++) {
+    print('  ${i + 1}) ${list[i].value}');
+  }
+  print('  Enter number (1-${list.length}) [default: 1]: ');
+  stdout.flush();
+
+  if (!stdin.hasTerminal) {
+    print('');
+    print('No interactive terminal. Run with: --template=<name>');
+    print('  e.g. modular_app create my_app --template=ecommerce');
+    print('  Templates: ${list.map((e) => e.key).join(", ")}');
+    exit(1);
+  }
+
+  final line = stdin.readLineSync()?.trim() ?? '1';
+  final index = int.tryParse(line);
+  if (index == null || index < 1 || index > list.length) {
+    return list[0].key;
+  }
+  return list[index - 1].key;
+}
+
+void createProject(String name, {String? template}) {
   final cwd = p.current;
   final projectPath = p.join(cwd, name);
 
@@ -206,6 +265,10 @@ void createProject(String name) {
     print('Error: Directory "$name" already exists.');
     exit(1);
   }
+
+  final templateKey = _selectTemplate(template);
+  print('Using template: $templateKey');
+  print('');
 
   print('Creating Flutter project: $name ...');
   final result = Process.runSync(
@@ -221,7 +284,12 @@ void createProject(String name) {
   print('Flutter project created.');
 
   final packageRoot = _packageRoot();
-  final templateLib = Directory(p.join(packageRoot, 'lib'));
+  final Directory templateLib;
+  if (templateKey == 'default') {
+    templateLib = Directory(p.join(packageRoot, 'lib'));
+  } else {
+    templateLib = Directory(p.join(packageRoot, 'templates', templateKey, 'lib'));
+  }
   if (!templateLib.existsSync()) {
     print('Error: Template lib not found at ${templateLib.path}');
     exit(1);
@@ -237,8 +305,8 @@ void createProject(String name) {
     projectLib.createSync(recursive: true);
   }
 
-  print('Injecting modular architecture (core, shared, features)...');
-  _copyDirRecursive(templateLib, projectLib);
+  print('Injecting template ($templateKey)...');
+  _copyDirRecursive(templateLib, projectLib, projectPackageName: name);
 
   print('Adding dependencies to pubspec.yaml...');
   _mergePubspecDependencies(projectPath);

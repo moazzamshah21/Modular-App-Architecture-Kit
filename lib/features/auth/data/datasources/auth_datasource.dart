@@ -1,4 +1,4 @@
-import 'package:modularapparchitecture/core/services/firebase_auth_service.dart';
+import '../../../../core/services/firebase_auth_service.dart';
 
 /// Abstract auth data source (implement with Firebase, mock, etc.).
 abstract class AuthDatasource {
