@@ -1,5 +1,7 @@
 name: modularapparchitecture
 description: "Modular App Architecture Kit 2026 — Feature-first Flutter starter with GetX, clean architecture, Firebase helpers, and CLI generators."
+repository: https://github.com/moazzamshah21/Modular-App-Architecture-Kit.git
+homepage: https://github.com/moazzamshah21/Modular-App-Architecture-Kit
 publish_to: 'none'
 
 version: 0.1.0+1
