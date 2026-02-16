@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
-/// Central theme. Light/dark + design tokens.
+/// Central theme with light and dark modes.
+///
+/// Use [light] and [dark] with [GetMaterialApp] or [MaterialApp]:
+/// ```dart
+/// theme: AppTheme.light,
+/// darkTheme: AppTheme.dark,
+/// ```
 class AppTheme {
   AppTheme._();
 
+  /// Light theme with Material 3 color scheme.
   static ThemeData get light => ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -21,6 +28,7 @@ class AppTheme {
         ),
       );
 
+  /// Dark theme with Material 3 color scheme.
   static ThemeData get dark => ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

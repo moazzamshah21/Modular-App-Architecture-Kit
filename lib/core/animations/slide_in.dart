@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Slide-in animation (from edge with optional delay).
+/// A widget that animates its child with a slide-in effect.
+///
+/// Example:
+/// ```dart
+/// SlideIn(offset: Offset(0, 0.1), child: MyList())
+/// ```
 class SlideIn extends StatefulWidget {
   const SlideIn({
     super.key,
@@ -11,10 +16,19 @@ class SlideIn extends StatefulWidget {
     this.offset = const Offset(0, 0.1),
   });
 
+  /// The child widget to animate.
   final Widget child;
+
+  /// Delay before the animation starts.
   final Duration delay;
+
+  /// Duration of the slide animation.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Starting offset (e.g. Offset(0, 0.1) slides up from below).
   final Offset offset;
 
   @override

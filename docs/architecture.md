@@ -1,40 +1,48 @@
 # Architecture
 
-This document describes the architecture philosophy and folder structure of the Modular App Architecture Kit 2026.
+This document describes the architecture of the Modular App Architecture Kit 2026 and the structure of generated projects.
 
-## Philosophy
+## Generated app structure (templates)
 
-- **Feature-first**: Code is organized by feature (`auth`, `profile`, …), not by type (screens, widgets, services). Each feature owns its data, domain, and UI.
-- **Clean layers**: Within a feature, we keep a clear flow: **Presentation → Domain → Data**. UI talks to controllers; controllers call use cases; use cases use repositories; repositories use datasources (Firebase, API, local).
-- **Dependency rule**: Dependencies point inward. Domain does not depend on Flutter or GetX. Data can depend on external SDKs (Firebase, Dio). Presentation depends on GetX and Flutter.
-- **Testability**: Use cases and repositories are plain Dart; they can be tested with mocks. Controllers and pages can be tested with GetX and widget tests.
-
-## Folder breakdown
+When you run `modular_app create my_app`, you choose a template. Each template produces:
 
 ```
 lib/
-  core/           # Cross-cutting: config, DI, routes, theme, animations, services
-  shared/         # Reusable widgets and extensions used by multiple features
-  features/
-    <feature>/    # One folder per feature
-      data/       # Models, repositories (impl), datasources
-      domain/     # Entities, repository contracts, use cases
-      presentation/  # Controllers, pages, widgets
-      bindings/   # GetX bindings for this feature
+  main.dart
+  app/
+    bindings/       # GetX bindings (AuthBinding, CartBinding, etc.)
+    controllers/    # GetX controllers
+    models/         # Data models (User, Product, etc.)
+    services/       # firebase_service.dart (dummy — replace with real Firebase/API)
+    views/          # Pages organized by feature (auth/, home/, cart/, etc.)
+    routes/         # app_pages.dart with named routes
 ```
 
-- **core**: Used by the whole app (env, app bindings, routes, theme, animations, Firebase/Dio services).
-- **shared**: Extensions (e.g. theme, spacing) and widgets that don’t belong to a single feature.
-- **features**: Each subfolder is a feature with the same internal structure so the architecture stays predictable and scalable.
+- **bindings**: Register controllers and services with GetX.
+- **controllers**: GetX controllers with reactive state (`Obx`).
+- **models**: Plain Dart models for data.
+- **services**: Dummy Firebase/API — replace with real implementations.
+- **views**: Flutter pages (login, home, cart, etc.).
+- **routes**: Named routes and `GetPage` definitions.
 
 ## Data flow
 
 ```
 Page (UI)
   → Controller (GetX)
-    → UseCase (domain)
-      → Repository (interface in domain, impl in data)
-        → DataSource (Firebase / API / local)
+    → Service (Firebase / API)
 ```
 
-For more detail and a diagram, see the [README](../README.md#-clean-architecture-diagram).
+Replace the dummy `firebase_service.dart` with real Firebase Auth, Firestore, or REST API calls.
+
+## Splash & auth
+
+- **Splash**: Shows for ~1.5s, checks auth state, then navigates to Login or main screen.
+- **Login / Sign up**: Wired to `AuthController`; errors and loading handled.
+- **Routes**: Named routes with GetX; bindings attached per route.
+
+## Philosophy
+
+- **Template-first**: Start with a working app (E-Commerce, Messaging, etc.) and customize.
+- **GetX**: State management, routing, dependency injection.
+- **Dummy services**: Replace `firebase_service.dart` with real backend logic.

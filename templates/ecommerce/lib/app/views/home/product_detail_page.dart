@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../controllers/cart_controller.dart';
 import '../../models/product_model.dart';
-import '../../routes/app_pages.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({super.key});

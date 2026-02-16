@@ -4,6 +4,7 @@ import '../bindings/auth_binding.dart';
 import '../bindings/sleep_binding.dart';
 import '../views/analytics/analytics_page.dart';
 import '../views/auth/login_page.dart';
+import '../views/splash/splash_page.dart';
 import '../views/auth/signup_page.dart';
 import '../views/home/home_page.dart';
 import '../views/home/sleep_log_page.dart';

@@ -31,7 +31,7 @@ class SignUpPage extends GetView<AuthController> {
               ),
               const SizedBox(height: 32),
               Obx(() {
-                if (controller.errorMessage.value != null)
+                if (controller.errorMessage.value != null) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Container(
@@ -44,6 +44,7 @@ class SignUpPage extends GetView<AuthController> {
                       child: Text(controller.errorMessage.value!, style: TextStyle(color: Colors.red.shade700)),
                     ),
                   );
+                }
                 return const SizedBox.shrink();
               }),
               TextField(

@@ -9,16 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Full project scaffold**: `modular_app create <project_name>` — runs `flutter create`, then injects full architecture (core, shared, features/auth, home, profile), main.dart, routes, bindings, theme, and merges required dependencies into pubspec. Enables one-command bootstrap: `modular_app create my_app` then `cd my_app && flutter pub get && flutter run`.
+- **App templates**: Choose from 4 templates when creating a project:
+  - E-Commerce (products, cart, checkout)
+  - Messaging (chat list, chat screen)
+  - Music/Video (library, player, playlists)
+  - Sleep Tracker (logs, analytics)
+- **Splash screen** with auth check in all templates.
+- **Improved UI**: Themed inputs, cards, empty states, error handling for all templates.
+- **Template selection**: Interactive prompt (1–4) or `--template=<name>` flag.
+- **Relative imports** in templates for portability.
 
 ### Changed
 
-- **README**: Quick start with `create` at top; CLI section documents create / generate / init; new “Publish & use as package” section; roadmap updated for full project scaffold.
-- **docs/getting-started.md**: “Option A: Create a new project” and “Option B: Run this repo”; generate feature section clarified for use inside created or cloned projects.
+- **Removed default template**: Only templates from `templates/` folder (ecommerce, messaging, media, sleep_tracker).
+- **Generated structure**: `lib/app/` with bindings, controllers, models, services, views, routes (instead of core/features).
+- **README**: Updated with template docs, setup commands, and `dart run` alternative for global cache issues.
+- **docs/architecture.md**: Documents template structure.
+- **docs/getting-started.md**: Template selection, troubleshooting.
 
 ### Fixed
 
-- Nothing yet.
+- **CartController not found** in E-Commerce: Added CartBinding to home and product detail routes.
+- **Chat screen** in Messaging: Loads messages when opened.
+- **Package imports**: Templates use relative imports so generated projects work without package name replacement.
 
 ---
 
@@ -26,23 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Feature-first structure**: `lib/core/`, `lib/shared/`, `lib/features/` with clean architecture per feature (data / domain / presentation / bindings).
-- **Auth feature**: Login, signup, splash with real `FirebaseAuth.instance.currentUser` check; GetX bindings and named routes.
-- **Profile feature**: Non-auth example (entity, repository, use cases, controller, page) to show architecture beyond auth.
-- **CLI** (`modular_app`): `generate feature <name>`, `init [--state=getx]`; creates full feature folders and binding stub.
-- **Core services**: `FirebaseAuthService`, `FirestoreService`; `ApiClient` (Dio) with interceptors (auth, logging, error) and `ApiException`.
-- **Animations**: `FadeIn`, `SlideIn`, `ScaleIn` with delay/duration/curve; `200.ms` extension.
-- **Theme**: `AppTheme` (light/dark), `AppColors`, `AppTypography`; `theme_extensions` for spacing.
-- **Config**: `Env` (dev/staging/prod) via `--dart-define=ENV=`.
-- **Testing**: Mirror layout under `test/features/auth/`, `test/core/`; example UseCase test (mock repository), Repository test (mock datasource), API client test; `mocktail` for mocks.
-
-### Changed
-
-- N/A (initial release).
-
-### Fixed
-
-- N/A.
+- Feature-first structure, auth flow, profile feature, CLI, core services, animations, theme, testing layout.
 
 ---
 

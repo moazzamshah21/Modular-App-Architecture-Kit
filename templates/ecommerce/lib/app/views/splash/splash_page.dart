@@ -38,7 +38,7 @@ class _SplashPageState extends State<SplashPage> {
             end: Alignment.bottomRight,
             colors: [
               Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
             ],
           ),
         ),
@@ -58,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
               const SizedBox(height: 8),
               Text(
                 'Your shop, simplified',
-                style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 16),
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 16),
               ),
               const SizedBox(height: 48),
               const CircularProgressIndicator(color: Colors.white),

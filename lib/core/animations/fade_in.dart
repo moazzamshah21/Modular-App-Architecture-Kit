@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Fade-in animation with optional delay and duration.
+/// A widget that animates its child with a fade-in effect.
+///
+/// Use [delay] to wait before starting, [duration] for animation length,
+/// and [curve] for the animation curve.
+///
+/// Example:
+/// ```dart
+/// FadeIn(delay: 200.ms, child: MyCard())
+/// ```
 class FadeIn extends StatefulWidget {
   const FadeIn({
     super.key,
@@ -10,9 +18,16 @@ class FadeIn extends StatefulWidget {
     this.curve = Curves.easeOut,
   });
 
+  /// The child widget to animate.
   final Widget child;
+
+  /// Delay before the animation starts.
   final Duration delay;
+
+  /// Duration of the fade-in animation.
   final Duration duration;
+
+  /// Animation curve (e.g. [Curves.easeOut]).
   final Curve curve;
 
   @override
@@ -57,7 +72,10 @@ class _FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
   }
 }
 
-/// Extension for concise duration: 200.ms
+/// Extension for concise duration literals.
+///
+/// Example: `200.ms` returns `Duration(milliseconds: 200)`.
 extension DurationExtension on int {
+  /// Returns a [Duration] with this many milliseconds.
   Duration get ms => Duration(milliseconds: this);
 }

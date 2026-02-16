@@ -1,91 +1,88 @@
 # Getting started
 
-Quick setup to run the Modular App Architecture Kit 2026, create a new project, or generate your first feature.
+Quick setup to create a new project with the Modular App Architecture Kit 2026.
 
 ## Prerequisites
 
 - Flutter SDK (stable)
 - Dart 3.x
 
-## Option A: Create a new project (recommended)
+## Create a new project
 
-Use the CLI to create a full Flutter app with the architecture already in place:
+### Option 1: With template selection (interactive)
 
 ```bash
-# Install the CLI (from pub.dev after publishing, or from this repo)
-dart pub global activate modularapparchitecture
+# Activate CLI (from package directory)
+cd /path/to/modularapparchitecture
+dart pub global activate --source path .
 
-# Create the project
+# Create project (you'll be prompted to choose 1–4)
+cd /path/to/your/projects
 modular_app create my_app
+```
+
+You'll see:
+
+```
+=== Choose a template ===
+  1) E-Commerce (products, cart, checkout)
+  2) Messaging (chat list, chat screen)
+  3) Music/Video (library, player, playlists)
+  4) Sleep Tracker (logs, analytics)
+  Enter number (1-4): 
+```
+
+Type 1, 2, 3, or 4 and press Enter.
+
+### Option 2: Specify template directly
+
+```bash
+modular_app create my_app --template=ecommerce
+modular_app create my_chat --template=messaging
+modular_app create my_media --template=media
+modular_app create my_sleep --template=sleep_tracker
+```
+
+### Option 3: Run CLI directly (no global install)
+
+```bash
+cd /path/to/your/projects
+dart run /path/to/modularapparchitecture/bin/modular_app.dart create my_app --template=ecommerce
+```
+
+## Run the app
+
+```bash
 cd my_app
 flutter pub get
 flutter run
 ```
 
-Without global install (e.g. from this repo):
+## Next steps
+
+1. **Replace dummy Firebase**: Edit `lib/app/services/firebase_service.dart` with real Firebase Auth, Firestore, or REST API calls.
+2. **Add Firebase config**: Add `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) for Firebase.
+3. **Customize**: Modify views, models, and controllers to fit your app.
+
+## Generate a feature (for feature-first projects)
+
+If your project uses `lib/features/` structure, you can generate new features:
 
 ```bash
-dart run modularapparchitecture:modular_app create my_app
-cd my_app
-flutter pub get
-flutter run
+modular_app generate feature <name>
 ```
 
-This gives you `core/`, `shared/`, `features/auth`, `features/home`, `features/profile`, routes, bindings, and theme. Optionally add Firebase config files for auth/Firestore.
+This creates `lib/features/<name>/` with data, domain, presentation, bindings.
 
-## Option B: Run this repo as the app
+## Troubleshooting
 
-1. Clone the repo and open the project root.
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-3. (Optional) Firebase: add `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) so auth and Firestore work. The app still runs without them (splash will redirect to login).
-4. Run:
-   ```bash
-   flutter run
-   ```
-
-## Generate a new feature
-
-From the **project root** (an app created with `modular_app create` or this repo):
+**"Injecting modular architecture (core, shared, features)"** — You're running an old CLI. Use:
 
 ```bash
-dart run modularapparchitecture:modular_app generate feature <name>
+dart pub global deactivate modularapparchitecture
+dart pub global activate --source path .
 ```
 
-Example:
+Or run directly: `dart run modularapparchitecture/bin/modular_app.dart create my_app`
 
-```bash
-dart run modularapparchitecture:modular_app generate feature settings
-```
-
-This creates `lib/features/settings/` with `data/`, `domain/`, `presentation/`, and `bindings/`. Next steps:
-
-1. Add your entity, repository, use cases, and datasource.
-2. Register the feature in `core/routes/app_routes.dart` and in `GetMaterialApp`’s `getPages`.
-3. Attach the feature’s binding to its route.
-
-Use the existing `auth` and `profile` features as references.
-
-## Tests
-
-```bash
-flutter test
-```
-
-Tests live under `test/features/` and `test/core/`, mirroring `lib/`. See example UseCase and Repository tests there.
-
-## Environment
-
-Build for a specific environment:
-
-```bash
-flutter run --dart-define=ENV=dev
-flutter run --dart-define=ENV=staging
-flutter run --dart-define=ENV=prod
-```
-
-Use `Env.current` from `lib/core/config/env.dart` in your code.
-
-For more (CLI, auth flow, animations, API client), see the [README](../README.md).
+**No template prompt** — Run from a real terminal (Terminal.app, iTerm). Or use `--template=ecommerce` to skip the prompt.

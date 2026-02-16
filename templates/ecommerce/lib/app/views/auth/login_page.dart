@@ -34,7 +34,7 @@ class LoginPage extends GetView<AuthController> {
               ),
               const SizedBox(height: 48),
               Obx(() {
-                if (controller.errorMessage.value != null)
+                if (controller.errorMessage.value != null) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Container(
@@ -58,6 +58,7 @@ class LoginPage extends GetView<AuthController> {
                       ),
                     ),
                   );
+                }
                 return const SizedBox.shrink();
               }),
               TextField(

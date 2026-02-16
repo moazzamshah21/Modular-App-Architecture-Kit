@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-/// Scale-in animation (pop-in effect).
+/// A widget that animates its child with a scale (pop-in) effect.
+///
+/// Example:
+/// ```dart
+/// ScaleIn(begin: 0.8, child: MyDialog())
+/// ```
 class ScaleIn extends StatefulWidget {
   const ScaleIn({
     super.key,
@@ -11,10 +16,19 @@ class ScaleIn extends StatefulWidget {
     this.begin = 0.8,
   });
 
+  /// The child widget to animate.
   final Widget child;
+
+  /// Delay before the animation starts.
   final Duration delay;
+
+  /// Duration of the scale animation.
   final Duration duration;
+
+  /// Animation curve.
   final Curve curve;
+
+  /// Initial scale (0–1). Default 0.8.
   final double begin;
 
   @override

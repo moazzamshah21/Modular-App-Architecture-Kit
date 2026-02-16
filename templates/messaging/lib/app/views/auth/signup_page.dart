@@ -25,7 +25,7 @@ class SignUpPage extends GetView<AuthController> {
               Text('Join and start chatting', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600)),
               const SizedBox(height: 32),
               Obx(() {
-                if (controller.errorMessage.value != null)
+                if (controller.errorMessage.value != null) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Container(
@@ -34,6 +34,7 @@ class SignUpPage extends GetView<AuthController> {
                       child: Text(controller.errorMessage.value!, style: TextStyle(color: Colors.red.shade700)),
                     ),
                   );
+                }
                 return const SizedBox.shrink();
               }),
               TextField(
