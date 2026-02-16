@@ -1,0 +1,31 @@
+name: modularapparchitecture
+description: "Modular App Architecture Kit 2026 — Feature-first Flutter starter with GetX, clean architecture, Firebase helpers, and CLI generators."
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  get: ^4.6.6
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.4
+  cloud_firestore: ^5.5.2
+  path: ^1.9.0
+  dio: ^5.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mocktail: ^1.0.4
+
+executables:
+  modular_app: bin/modular_app.dart
+
+flutter:
+  uses-material-design: true
