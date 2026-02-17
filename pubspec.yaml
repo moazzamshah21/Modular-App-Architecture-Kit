@@ -1,9 +1,8 @@
 name: modularapparchitecture
 description: "Modular App Architecture Kit 2026 — Feature-first Flutter starter with GetX, clean architecture, Firebase helpers, and CLI generators."
-repository: https://github.com/moazzamshah21/Modular-App-Architecture-Kit.git
+repository: https://github.com/moazzamshah21/Modular-App-Architecture-Kit
 homepage: https://github.com/moazzamshah21/Modular-App-Architecture-Kit
 documentation: https://github.com/moazzamshah21/Modular-App-Architecture-Kit#readme
-publish_to: 'none'
 topics:
   - flutter
   - getx
@@ -11,7 +10,7 @@ topics:
   - firebase
   - cli
 
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ^3.10.4
@@ -21,9 +20,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   get: ^4.6.6
-  firebase_core: ^3.8.1
-  firebase_auth: ^5.3.4
-  cloud_firestore: ^5.5.2
+  firebase_core: ^4.0.0
+  firebase_auth: ^6.0.0
+  cloud_firestore: ^6.0.0
   path: ^1.9.0
   dio: ^5.7.0
 

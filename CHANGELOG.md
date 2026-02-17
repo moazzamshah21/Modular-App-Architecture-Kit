@@ -35,6 +35,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.1] - 2026-02-17
+
+### Changed
+
+- **Dependencies**: Bumped to latest stable — `firebase_core` ^4.0.0, `firebase_auth` ^6.0.0, `cloud_firestore` ^6.0.0 for pub.dev up-to-date check.
+- **Repository URL**: Use canonical GitHub URL (no `.git` suffix) for pubspec verification.
+
+---
+
 ## [0.1.0] - 2026-02-16
 
 ### Added
@@ -43,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/moazzamshah21/Modular-App-Architecture-Kit/releases/tag/v0.1.0
